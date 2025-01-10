@@ -26,6 +26,14 @@ const mockRequisicao = (retorno) => {
   });
 };
 
+const mockRequisicaoErro = () => {
+  return new Promise((_, reject) => {
+    setTimeout(() => {
+      reject();
+    }, 200);
+  });
+};
+
 describe("Requisições para API", () => {
   it("Deve possuir a mesma quantidade de transações da api apresentadas no extrato", async () => {
     api.get.mockImplementation(() => mockRequisicao(mockTransacoes));
@@ -39,5 +47,15 @@ describe("Requisições para API", () => {
     listaTransacoes.forEach((transacao) =>
       expect(transacao).toBeInTheDocument()
     );
+  });
+
+  it("Deve ser retornado uma lista vazia na busca de transações", async () => {
+    api.get.mockImplementation(() => mockRequisicaoErro());
+    render(<AppRoutes />, { wrapper: BrowserRouter });
+    const transacoes = await buscaTransacoes();
+
+    const listaTransacoes = screen.queryAllByTestId("extrato-transacao");
+
+    expect(listaTransacoes).toHaveLength(transacoes.length);
   });
 });
