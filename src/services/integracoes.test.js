@@ -56,6 +56,7 @@ describe("Requisições para API", () => {
 
     const listaTransacoes = screen.queryAllByTestId("extrato-transacao");
 
+    expect(transacoes).toEqual([]);
     expect(listaTransacoes).toHaveLength(transacoes.length);
   });
 });
