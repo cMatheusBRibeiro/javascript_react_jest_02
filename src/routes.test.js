@@ -27,4 +27,18 @@ describe("Rotas", () => {
 
     expect(meusCartoes).toBeInTheDocument();
   });
+
+  it("Deve renderizar o useLocation para /cartoes", () => {
+    const rota = "/cartoes";
+
+    render(
+      <MemoryRouter initialEntries={[rota]}>
+        <App />
+      </MemoryRouter>
+    );
+
+    const textoDaRota = screen.getByTestId("local");
+
+    expect(textoDaRota).toHaveTextContent(rota);
+  });
 });
