@@ -1,6 +1,6 @@
-import React from 'react';
-import estilos from './Extrato.module.css';
-import Transacoes from './Transacoes';
+import React from "react";
+import estilos from "./Extrato.module.css";
+import Transacoes from "./Transacoes";
 
 export default function Extrato({ transacoes }) {
   return (
@@ -9,7 +9,12 @@ export default function Extrato({ transacoes }) {
       <ul data-testid="lista-transacoes">
         {transacoes.map((transacao, indice) => {
           return (
-            <Transacoes key={indice} transacao={transacao} estilos={estilos} />
+            <Transacoes
+              data-testid="item-lista-transacoes"
+              key={indice}
+              transacao={transacao}
+              estilos={estilos}
+            />
           );
         })}
       </ul>
