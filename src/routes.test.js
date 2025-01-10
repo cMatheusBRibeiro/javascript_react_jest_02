@@ -1,44 +1,53 @@
 import { render, screen } from "@testing-library/react";
-import { BrowserRouter, MemoryRouter, Route, Routes } from "react-router-dom";
-import App from "./paginas/Principal/App";
-import Cartoes from "./componentes/Cartoes";
+import { MemoryRouter } from "react-router-dom";
+import AppRoutes from "./routes";
 
 describe("Rotas", () => {
   it("Deve renderizar a página principal e encontrar o nome do usuário", () => {
-    render(<App />, { wrapper: BrowserRouter });
+    const rota = "/";
+    render(
+      <MemoryRouter initialEntries={[rota]}>
+        <AppRoutes />
+      </MemoryRouter>
+    );
+
     const usuario = screen.getByText("Olá, Joana :)!");
     expect(usuario).toBeInTheDocument();
   });
 
   it("Deve renderizar rotas da aplicação e validar se os cartões estão sendo exibidos", () => {
     const rota = "/cartoes";
-
     render(
       <MemoryRouter initialEntries={[rota]}>
-        <Routes>
-          <Route path="/" element={<App />}>
-            <Route path="cartoes" element={<Cartoes />} />
-          </Route>
-        </Routes>
+        <AppRoutes />
       </MemoryRouter>
     );
 
     const meusCartoes = screen.getByText("Meus cartões");
-
     expect(meusCartoes).toBeInTheDocument();
   });
 
   it("Deve renderizar o useLocation para /cartoes", () => {
     const rota = "/cartoes";
-
     render(
       <MemoryRouter initialEntries={[rota]}>
-        <App />
+        <AppRoutes />
       </MemoryRouter>
     );
 
     const textoDaRota = screen.getByTestId("local");
-
     expect(textoDaRota).toHaveTextContent(rota);
+  });
+
+  it("Deve renderizar a página 404", () => {
+    const rotaInexistente = "/rota-inexistente";
+    render(
+      <MemoryRouter initialEntries={[rotaInexistente]}>
+        <AppRoutes />
+      </MemoryRouter>
+    );
+
+    const paginaErro = screen.getByTestId("pagina-404");
+    expect(paginaErro).toBeInTheDocument();
   });
 });
