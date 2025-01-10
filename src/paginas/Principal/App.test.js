@@ -38,4 +38,24 @@ describe("Componente <App />", () => {
     const tituloDaPagina = await screen.findByText("Meus cartões");
     expect(tituloDaPagina).toBeInTheDocument();
   });
+
+  describe("Página de investimentos", () => {
+    it("Deve encontrar o link para a página de investimentos", () => {
+      render(<AppRoutes />, { wrapper: BrowserRouter });
+
+      const linkPaginaInvestimentos = screen.getByText("Investimentos");
+
+      expect(linkPaginaInvestimentos).toBeInTheDocument();
+    });
+
+    it("Deve clicar no link para a página de investimentos e ser redirecionado", async () => {
+      render(<AppRoutes />, { wrapper: BrowserRouter });
+      const linkPaginaInvestimentos = screen.getByText("Investimentos");
+      userEvent.click(linkPaginaInvestimentos);
+
+      const tituloDaPagina = await screen.findByTestId("titulo-investimentos");
+
+      expect(tituloDaPagina).toHaveTextContent("Investimentos");
+    });
+  });
 });
